@@ -3,9 +3,9 @@ const {format} = require('d3-format')
 const {ascending, max} = require('d3-array')
 
 module.exports.parse = parse = (text) => {
-	const index = text.search(/\d{4}/)
-	const delimeter = text[index + 4]
-	const parsed = text.slice(index).split('\n').map(d => d.split(delimeter).map(e => +e.replace(/^\d/,''))).filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
+	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
+	const delimeter = data[0][4]
+	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,''))) //.filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
 	return parsed
 }
 

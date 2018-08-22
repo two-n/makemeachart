@@ -1,28 +1,51 @@
 require('dotenv').config()
-const Twit = require('twit')
 
-const { parse, makeViz } = require('./parse_n_viz')
- 
-var T = new Twit({
+// const { parse, makeViz } = require('./parse_n_viz')
+const crypto = require('crypto')
+const request = require('request-promise')
+const express = require('express')
+
+const app = express()
+app.set('port', (process.env.PORT || 5000))
+
+const auth = {
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRET,
-  access_token: process.env.ACCESS_TOKEN,
-  access_token_secret: process.env.ACCESS_SECRET,
-})
-
-const stream = T.stream('user')
-
-const tweetOut = (viz) => {
-	T.post('statuses/update', { status: viz }, function(err, data, response) {
-  	console.log(data)
-	})
+  token: process.env.ACCESS_TOKEN,
+  token_secret: process.env.ACCESS_SECRET
 }
 
-stream.on('tweet', function (msg) {
-	if (msg.entities.user_mentions.length && msg.entities.user_mentions[0].screen_name === "makemeachart") {
-		const data = parse(msg.text)
-		const viz = makeViz(data)
-		tweetOut(viz)
-	}
+get_challenge_response = function(crc_token, consumer_secret) {
+	hmac = crypto.createHmac('sha256', consumer_secret).update(crc_token).digest('base64')
+	return hmac
+}
+
+/** Receives challenge response check (CRC) **/
+app.get('/webhook/twitter', function(request, response) {
+  var crc_token = request.query.crc_token
+  if (crc_token) {
+    var hash = get_challenge_response(crc_token, auth.consumer_secret)
+
+    response.status(200);
+    response.send({
+      response_token: 'sha256=' + hash
+    })
+  } else {
+    response.status(400);
+    response.send('Error: crc_token missing from request.')
+  }
 })
+
+/** listen **/
+const server = app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'))
+})
+
+
+/** Serves the home page **/
+app.get('/', function(request, response) {
+  response.send('index')
+})
+
+
 
