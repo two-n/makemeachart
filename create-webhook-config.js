@@ -19,7 +19,7 @@ var request_options = {
     'Content-type': 'application/x-www-form-urlencoded'
   },
   form: {
-    url: 'https://makemeachart.herokuapp.com/'
+    url: 'https://makemeachart.herokuapp.com/webhook/twitter'
   }
 }
 
