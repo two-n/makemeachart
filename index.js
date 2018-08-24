@@ -36,6 +36,11 @@ app.get('/webhook/twitter', function(request, response) {
   }
 })
 
+/** Subscription management **/
+app.get('/subscriptions', function(request, response) {
+	console.log(request)
+})
+
 /** listen **/
 const server = app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'))
@@ -44,7 +49,7 @@ const server = app.listen(app.get('port'), function() {
 
 /** Serves the home page **/
 app.get('/', function(request, response) {
-  response.send('index')
+  response.send('App is running')
 })
 
 

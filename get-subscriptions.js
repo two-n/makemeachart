@@ -19,18 +19,15 @@ var request_options = {
 }
 
 
-
+// GET request to retrieve webhook config
 request.get(request_options).then(function (response) {
   console.log('HTTP response code:', response.statusCode)
 
   if (response.statusCode == 204) {
-    console.log('Subscription added.')
+    console.log('Subscription exists for user.')
   }
 }).catch(function (response) {
-  console.log('Subscription was not able to be added.')
-  console.log('- Verify environment name.')
-  console.log('- Verify "Read, Write and Access direct messages" is enabled on apps.twitter.com.')
-  console.log('Full error message below:')
+  console.log('HTTP response code:', response.statusCode)
+  console.log('Incorrect environment name or subscription for user does not exist.')
   console.log(response.error)
-  // console.log(response)
 })
