@@ -7,15 +7,15 @@ var auth = {}
 auth.twitter_oauth = {
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRET,
-  token: process.env.ACCESS_TOKEN,
-  token_secret: process.env.ACCESS_SECRET
+  token: process.env.USER_TOKEN, // USER SPECIFIC
+  token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
 }
 
-// request options
+//request options
 var request_options = {
   url: 'https://api.twitter.com/1.1/account_activity/all/dev/subscriptions.json',
   oauth: auth.twitter_oauth,
-  // resolveWithFullResponse: true
+  resolveWithFullResponse: true
 }
 
 console.log(request_options)
