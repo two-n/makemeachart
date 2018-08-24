@@ -1,7 +1,7 @@
 require('dotenv').config()
 const request = require('request-promise')
 
-var auth = {}
+const auth = {}
 
 // twitter info
 auth.twitter_oauth = {
@@ -12,7 +12,7 @@ auth.twitter_oauth = {
 }
 
 // request options
-var request_options = {
+const request_options = {
   url: 'https://api.twitter.com/1.1/account_activity/all/dev/webhooks.json',
   oauth: auth.twitter_oauth,
   headers: {

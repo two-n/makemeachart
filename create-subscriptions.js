@@ -15,12 +15,15 @@ auth.twitter_oauth = {
 var request_options = {
   url: 'https://api.twitter.com/1.1/account_activity/all/dev/subscriptions.json',
   oauth: auth.twitter_oauth,
-  resolveWithFullResponse: true
+  // resolveWithFullResponse: true
 }
 
+console.log(request_options)
 
 
-request.get(request_options).then(function (response) {
+request.get(request_options, function (error, response, body) {
+  console.log(body)
+}).then(function (response) {
   console.log('HTTP response code:', response.statusCode)
 
   if (response.statusCode == 204) {
