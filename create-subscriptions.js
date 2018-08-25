@@ -9,6 +9,7 @@ auth.twitter_oauth = {
   consumer_secret: process.env.CONSUMER_SECRET,
   token: process.env.USER_TOKEN, // USER SPECIFIC
   token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
+  nonce: process.env.OAUTH_NONCE,
 }
 
 //request options
@@ -21,7 +22,7 @@ var request_options = {
 console.log(request_options)
 
 
-request.get(request_options, function (error, response, body) {
+request.post(request_options, function (error, response, body) {
   console.log(body)
 }).then(function (response) {
   console.log('HTTP response code:', response.statusCode)
@@ -30,10 +31,6 @@ request.get(request_options, function (error, response, body) {
     console.log('Subscription added.')
   }
 }).catch(function (response) {
-  console.log('Subscription was not able to be added.')
-  console.log('- Verify environment name.')
-  console.log('- Verify "Read, Write and Access direct messages" is enabled on apps.twitter.com.')
   console.log('Full error message below:')
   console.log(response.error)
-  // console.log(response)
 })
