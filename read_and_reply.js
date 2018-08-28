@@ -2,13 +2,18 @@ const {scaleLinear} = require('d3-scale')
 const {format} = require('d3-format')
 const {ascending, max} = require('d3-array')
 
-module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
-	console.log(tweetEvent)
-	let parsed = parse(tweetEvent.tweet_create_events[0].text)
-	makeViz(parsed)
-	console.log(makeViz(parsed))
-}
+require('dotenv').config()
+const request = require('request-promise')
 
+const auth = {}
+
+// twitter info
+auth.twitter_oauth = {
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  token: process.env.USER_TOKEN, // USER SPECIFIC
+  token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
+}
 
 const parse = (text) => {
 	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
@@ -44,4 +49,29 @@ const makeViz = (data) => {
 	viz += '\n' + '\u3000'.repeat(2) + xScale.domain()[0].toString().slice(2,4) + '\uffe3'.repeat(xScale.range()[1]) + xScale.domain()[1].toString().slice(2,4)
 
 	return viz
+}
+
+module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
+	
+	console.log(tweetEvent)
+	console.log(tweet_create_events[0].user)
+	
+	// request options
+	const request_options = {
+	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=Test%20tweet%20using%20the%20POST%20statuses%2Fupdate%20endpoint',
+	  oauth: auth.twitter_oauth,
+	  headers: {
+	    'Content-type': 'application/json'
+	  }
+	}
+
+	// POST request to create webhook config
+	request.post(request_options).then(function (body) {
+	  console.log(body)
+	}).catch(function (body) {
+	  console.log(body)
+	})
+	
+	let parsed = parse(tweetEvent.tweet_create_events[0].text)
+	console.log(makeViz(parsed))
 }
