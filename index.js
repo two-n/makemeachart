@@ -4,6 +4,7 @@ require('dotenv').config()
 const crypto = require('crypto')
 const request = require('request-promise')
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
 app.use(bodyParser.json())
