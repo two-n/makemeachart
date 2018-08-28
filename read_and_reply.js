@@ -54,7 +54,7 @@ const makeViz = (data) => {
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
-	let id = tweetEvent.id
+	let id = tweetEvent.tweet_create_events[0].id
 	// let tweet = 'Test%20tweet%20using%20the%20POST%20statuses%2Fupdate%20endpoint'
 	let tweet = makeViz(parsed)
 	
