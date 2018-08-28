@@ -54,7 +54,7 @@ const makeViz = (data) => {
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	
 	console.log(tweetEvent)
-	console.log(tweet_create_events[0].user)
+	console.log(tweetEvent.tweet_create_events[0].user)
 	
 	// request options
 	const request_options = {
