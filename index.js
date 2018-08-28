@@ -96,7 +96,7 @@ app.get('/subscriptions', function(request, response) {
 // post the activity
 app.post('/webhook/twitter', function(request, response) { 
   console.log(request)
-  console.log(response)
+  // console.log(response)
 })
 
 /** listen **/
