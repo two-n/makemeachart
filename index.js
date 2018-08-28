@@ -6,6 +6,8 @@ const request = require('request-promise')
 const express = require('express')
 
 const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.set('port', (process.env.PORT || 5000))
 
 const auth = {}
@@ -111,6 +113,11 @@ const server = app.listen(app.get('port'), function() {
 app.get('/', function(request, response) {
   response.send('App is running')
 })
+
+app.get('/activity', function(request, response) {
+
+})
+
 
 
 
