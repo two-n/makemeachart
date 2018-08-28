@@ -62,12 +62,12 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	const request_options = {
 	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + tweet + 'in_reply_to_status_id=@' + user,
 	  oauth: auth.twitter_oauth,
-	  headers: {
-	    'Content-type': 'application/json'
-	  }
+	  // headers: {
+	  //   'Content-type': 'application/json'
+	  // }
 	}
 
-	// POST request to create webhook config
+	// POST request to tweet
 	request.post(request_options).then(function (body) {
 	  console.log(body)
 	}).catch(function (body) {
