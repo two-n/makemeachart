@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const { parse, makeViz } = require('./parse_n_viz')
+const { read_and_reply } = require('./read_and_reply')
 const crypto = require('crypto')
 const request = require('request-promise')
 const express = require('express')
@@ -98,32 +98,7 @@ app.get('/subscriptions', function(request, response) {
 
 // post the activity
 app.post('/webhook/twitter', function(request, response) { 
-
-  let parsed = parse(request.body.tweet_create_events[0].text)
-  let user = request.body.tweet_create_events[0].user.screen_name
-  // let tweet = 'Test%20tweet%20using%20the%20POST%20statuses%2Fupdate%20endpoint'
-  let tweet = makeViz(parsed)
-
-  console.log(parsed)
-  console.log(user)
-  console.log(tweet)
-
-  // request options
-  const request_options = {
-    url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + tweet + 'in_reply_to_status_id=@' + user,
-    oauth: auth.twitter_oauth,
-    headers: {
-      'Content-type': 'application/json'
-    }
-  }
-
-  // POST request to tweet
-  request.post(request_options).then(function (body) {
-    console.log(body)
-  }).catch(function (body) {
-    console.log(body)
-  })
-
+  read_and_reply(request)
   response.send('200 OK')
 })
 

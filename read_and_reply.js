@@ -2,14 +2,27 @@ const {scaleLinear} = require('d3-scale')
 const {format} = require('d3-format')
 const {ascending, max} = require('d3-array')
 
-module.exports.parse = parse = (text) => {
+require('dotenv').config()
+const request = require('request-promise')
+
+const auth = {}
+
+// twitter info
+auth.twitter_oauth = {
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  token: process.env.USER_TOKEN, // USER SPECIFIC
+  token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
+}
+
+const parse = (text) => {
 	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
 	const delimeter = data[0][4]
 	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,''))) //.filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
 	return parsed
 }
 
-module.exports.makeViz = makeViz = (data) => {
+const makeViz = (data) => {
 
 	const xScale = scaleLinear()
     .domain([data[0][0], data[data.length-1][0]])
@@ -38,3 +51,28 @@ module.exports.makeViz = makeViz = (data) => {
 	return viz
 }
 
+module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
+
+	let parsed = parse(tweetEvent.tweet_create_events[0].text)
+	let user = tweetEvent.tweet_create_events[0].user.screen_name
+	// let tweet = 'Test%20tweet%20using%20the%20POST%20statuses%2Fupdate%20endpoint'
+	let tweet = makeViz(parsed)
+	
+	// request options
+	const request_options = {
+	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + tweet + 'in_reply_to_status_id=@' + user,
+	  oauth: auth.twitter_oauth,
+	  headers: {
+	    'Content-type': 'application/json'
+	  }
+	}
+
+	// POST request to create webhook config
+	request.post(request_options).then(function (body) {
+	  console.log(body)
+	}).catch(function (body) {
+	  console.log(body)
+	})
+
+	console.log(request_options)
+}
