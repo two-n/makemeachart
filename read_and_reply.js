@@ -4,9 +4,7 @@ const {ascending, max} = require('d3-array')
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	console.log(tweetEvent)
-	console.log(tweetEvent.tweet_create_events[0].text)
-	parse(tweetEvent.tweet_create_events[0].text)
-	console.log(parse(tweetEvent.tweet_create_events[0].text))
+	let parsed = parse(tweetEvent.tweet_create_events[0].text)
 	makeViz(parsed)
 	console.log(makeViz(parsed))
 }
