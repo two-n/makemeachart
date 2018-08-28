@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-// const { parse, makeViz } = require('./parse_n_viz')
+const { parse, makeViz } = require('./parse_n_viz')
+const { read_and_reply } = require('./read_and_reply')
 const crypto = require('crypto')
 const request = require('request-promise')
 const express = require('express')
