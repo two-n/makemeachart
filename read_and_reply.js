@@ -13,6 +13,7 @@ auth.twitter_oauth = {
   consumer_secret: process.env.CONSUMER_SECRET,
   token: process.env.USER_TOKEN, // USER SPECIFIC
   token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
+  nonce: process.env.OAUTH_NONCE,
 }
 
 const parse = (text) => {
