@@ -98,7 +98,7 @@ app.get('/subscriptions', function(request, response) {
 
 // post the activity
 app.post('/webhook/twitter', function(request, response) { 
-  console.log(request.body)
+  read_and_reply(response.body)
   response.send('200 OK')
 })
 
