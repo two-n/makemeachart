@@ -10,10 +10,10 @@ const auth = {}
 // twitter info
 auth.twitter_oauth = {
   consumer_key: process.env.CONSUMER_KEY,
-  consumer_secret: process.env.CONSUMER_SECRET,
+  // consumer_secret: process.env.CONSUMER_SECRET,
   token: process.env.USER_TOKEN, // USER SPECIFIC
-  token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
-  nonce: process.env.OAUTH_NONCE,
+  // token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
+  // nonce: process.env.OAUTH_NONCE,
 }
 
 const parse = (text) => {
@@ -63,9 +63,9 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	const request_options = {
 	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
 	  oauth: auth.twitter_oauth,
-	  // headers: {
-	  //   'Content-type': 'application/json'
-	  // }
+	  headers: {
+	    'Content-type': 'application/json'
+	  }
 	}
 
 	// POST request to tweet
