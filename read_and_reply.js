@@ -56,12 +56,12 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
 	let id = tweetEvent.tweet_create_events[0].id
-	// let tweet = 'Test%20tweet%20using%20the%20POST%20statuses%2Fupdate%20endpoint'
-	let tweet = makeViz(parsed)
+	let tweet = 'Test tweet using the POST statuses/update endpoint'
+	// let tweet = makeViz(parsed)
 	
 	// request options
 	const request_options = {
-	  url: encodeURIComponent('https://api.twitter.com/1.1/statuses/update.json?status=' + tweet + '&in_reply_to_status_id=' + id),
+	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
 	  oauth: auth.twitter_oauth,
 	  headers: {
 	    'Content-type': 'application/x-www-form-urlencoded'
