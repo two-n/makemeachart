@@ -61,11 +61,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	
 	// request options
 	const request_options = {
-	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
-	  oauth: auth.twitter_oauth,
 	  headers: {
 	    'content-type': 'application/json'
 	  }
+	  oauth: auth.twitter_oauth,
+	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
 	}
 
 	// POST request to tweet
