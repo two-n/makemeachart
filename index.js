@@ -114,10 +114,6 @@ app.get('/', function(request, response) {
   response.send('App is running')
 })
 
-// app.get('/activity', function(request, response) {
-
-// })
-
 
 
 
