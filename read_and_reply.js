@@ -53,9 +53,10 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
+	console.log(tweetEvent.tweet_create_events[0])
+
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
 	let id = tweetEvent.tweet_create_events[0].id
-	// let tweet = 'Test tweet using the POST statuses/update endpoint'
 	let tweet = makeViz(parsed)
 	
 	// request options
@@ -64,7 +65,7 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	    'content-type': 'application/json'
 	  },
 	  oauth: auth.twitter_oauth,
-	  url: 'https://api.twitter.com/1.1/statuses/update.json?in_reply_to_status_id=' + id + '&status=' + encodeURIComponent(tweet),
+	  url: 'https://api.twitter.com/1.1/statuses/update.json?&status=' + encodeURIComponent(tweet) + 'in_reply_to_status_id=' + id,
 	}
 
 	// POST request to tweet
