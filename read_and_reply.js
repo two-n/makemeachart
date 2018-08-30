@@ -57,13 +57,16 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	console.log(tweetEvent.tweet_create_events[0])
 
 	let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
+	let id = tweetEvent.tweet_create_events[0].id_str
+
 	if (quoteStatus) {
-		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
+		let user1 = tweetEvent.tweet_create_events[0].user.screen_name
+		let user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
+		let tweet = '@' + user1 + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
 	} else {
+		let user = tweetEvent.tweet_create_events[0].user.screen_name
 		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
 	}
-	let id = tweetEvent.tweet_create_events[0].id_str
-	let user = tweetEvent.tweet_create_events[0].user.screen_name
 	let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
 
 	// request options
