@@ -17,9 +17,7 @@ auth.twitter_oauth = {
 
 const parse = (text) => {
 	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
-	// console.log(data)
 	const delimeter = data[0][4]
-	// console.log(delimeter)
 	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,''))) //.filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
 	return parsed
 }
@@ -55,21 +53,13 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
-	// console.log(tweetEvent.tweet_create_events[0].text)
-	// console.log(tweetEvent.tweet_create_events[0].id_str)
-
-	// let parsed = parse(tweetEvent.tweet_create_events[0].text)
-	// console.log(parsed)
 	let id = tweetEvent.tweet_create_events[0].id_str
 	let user = tweetEvent.tweet_create_events[0].user.screen_name
 	let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
-	// console.log(tweet)
+	console.log(parse(tweetEvent.tweet_create_events[0].text))
 
 	// request options
 	const request_options = {
-	  headers: {
-	    'content-type': 'application/json'
-	  },
 	  oauth: auth.twitter_oauth,
 	  url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
 	}
@@ -81,5 +71,4 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	  console.log(body)
 	})
 
-	// console.log(request_options)
 }
