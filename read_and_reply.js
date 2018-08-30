@@ -58,6 +58,8 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
 	if (quoteStatus) {
+		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
+	} else {
 		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
 	}
 	let id = tweetEvent.tweet_create_events[0].id_str
