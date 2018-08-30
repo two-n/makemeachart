@@ -55,8 +55,9 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let id = tweetEvent.tweet_create_events[0].id_str
 	let user = tweetEvent.tweet_create_events[0].user.screen_name
-	let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
+	console.log(tweetEvent.tweet_create_events[0].text)
 	console.log(parse(tweetEvent.tweet_create_events[0].text))
+	let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
 
 	// request options
 	const request_options = {
