@@ -17,9 +17,9 @@ auth.twitter_oauth = {
 
 const parse = (text) => {
 	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
-	console.log(data)
+	// console.log(data)
 	const delimeter = data[0][4]
-	console.log(delimeter)
+	// console.log(delimeter)
 	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,''))) //.filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
 	return parsed
 }
@@ -55,15 +55,15 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
-	console.log(tweetEvent.tweet_create_events[0].text)
-	console.log(tweetEvent.tweet_create_events[0].id_str)
+	// console.log(tweetEvent.tweet_create_events[0].text)
+	// console.log(tweetEvent.tweet_create_events[0].id_str)
 
-	let parsed = parse(tweetEvent.tweet_create_events[0].text)
-	console.log(parsed)
+	// let parsed = parse(tweetEvent.tweet_create_events[0].text)
+	// console.log(parsed)
 	let id = tweetEvent.tweet_create_events[0].id_str
 	let user = tweetEvent.tweet_create_events[0].user.screen_name
-	let tweet = '@' + user + ':\n' + makeViz(parsed)
-	console.log(tweet)
+	let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
+	// console.log(tweet)
 
 	// request options
 	const request_options = {
@@ -81,5 +81,5 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	  console.log(body)
 	})
 
-	console.log(request_options)
+	// console.log(request_options)
 }
