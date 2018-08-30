@@ -55,8 +55,8 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
 	let id = tweetEvent.tweet_create_events[0].id
-	let tweet = 'Test tweet using the POST statuses/update endpoint'
-	// let tweet = makeViz(parsed)
+	// let tweet = 'Test tweet using the POST statuses/update endpoint'
+	let tweet = makeViz(parsed)
 	
 	// request options
 	const request_options = {
