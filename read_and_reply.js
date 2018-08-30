@@ -55,7 +55,8 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
-	console.log(tweetEvent.tweet_create_events[0])
+	console.log(tweetEvent.tweet_create_events[0].text)
+	console.log(tweetEvent.tweet_create_events[0].id_str)
 
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
 	let id = tweetEvent.tweet_create_events[0].id_str
@@ -71,11 +72,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	}
 
 	// POST request to tweet
-	request.post(request_options).then(function (body) {
-	  console.log(body)
-	}).catch(function (body) {
-	  console.log(body)
-	})
+	// request.post(request_options).then(function (body) {
+	//   console.log(body)
+	// }).catch(function (body) {
+	//   console.log(body)
+	// })
 
 	console.log(request_options)
 }
