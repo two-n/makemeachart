@@ -59,9 +59,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	console.log(tweetEvent.tweet_create_events[0].id_str)
 
 	let parsed = parse(tweetEvent.tweet_create_events[0].text)
+	console.log(parsed)
 	let id = tweetEvent.tweet_create_events[0].id_str
 	let tweet = makeViz(parsed)
-	
+	console.log(tweet)
+
 	// request options
 	const request_options = {
 	  headers: {
@@ -72,11 +74,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	}
 
 	// POST request to tweet
-	// request.post(request_options).then(function (body) {
-	//   console.log(body)
-	// }).catch(function (body) {
-	//   console.log(body)
-	// })
+	request.post(request_options).then(function (body) {
+	  console.log(body)
+	}).catch(function (body) {
+	  console.log(body)
+	})
 
 	console.log(request_options)
 }
