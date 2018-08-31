@@ -17,8 +17,8 @@ auth.twitter_oauth = {
 
 const parse = (text) => {
 	console.log('parsing...')
+	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
 	if (data.length) {
-		const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
 		const delimeter = data[0][4]
 		const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,'')))
 	}
