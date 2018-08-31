@@ -58,7 +58,7 @@ const makeViz = (data) => {
 
 		return viz
 	} else {
-		return
+		return false;
 	}
 }
 
