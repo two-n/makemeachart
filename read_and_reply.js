@@ -17,17 +17,17 @@ auth.twitter_oauth = {
 
 const parse = (text) => {
 	console.log('parsing...')
-	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
-	console.log(data)
-	const delimeter = data[0][4]
-	console.log(delimeter)
-	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,''))) //.filter(f => !isNaN(f[1])).sort((a,b) => ascending(a[0], b[0]))
-	console.log(parsed)
+	if (data.length) {
+		const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
+		const delimeter = data[0][4]
+		const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,'')))
+	}
+	console.log('parsed data = ' parsed)
 	return parsed
 }
 
 const makeViz = (data) => {
-
+	console.log('vizing... ')
 	const xScale = scaleLinear()
     .domain([data[0][0], data[data.length-1][0]])
     .range([0, 10])
