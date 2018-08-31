@@ -21,9 +21,11 @@ const parse = (text) => {
 	if (data.length) {
 		const delimeter = data[0][4]
 		const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,'')))
+		console.log('parsed data = ', parsed)
+		return parsed
+	} else {
+		return null
 	}
-	console.log('parsed data = ', parsed)
-	return parsed
 }
 
 const makeViz = (data) => {
