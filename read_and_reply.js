@@ -64,13 +64,12 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
-
 	let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
 	let id = tweetEvent.tweet_create_events[0].id_str
 	console.log(tweetEvent.tweet_create_events[0])
 	console.log(quoteStatus)
 
-	if (quoteStatus) {
+	if (quoteStatus && viz.length) {
 		let user1 = tweetEvent.tweet_create_events[0].user.screen_name
 		let user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
 		let tweet = '@' + user1 + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
@@ -89,7 +88,7 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 			console.log(body)
 		})
 
-	} else {
+	} else if (viz.length) {
 		let user = tweetEvent.tweet_create_events[0].user.screen_name
 		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
 
@@ -106,5 +105,7 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 			console.log(body)
 		})
 
+	} else {
+		null
 	}
 }
