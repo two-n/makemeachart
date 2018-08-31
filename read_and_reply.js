@@ -31,7 +31,7 @@ const parse = (text) => {
 const makeViz = (data) => {
 	console.log('vizing... ')
 
-	if (data.length) {
+	if (data === null) {
 		const xScale = scaleLinear()
 	    .domain([data[0][0], data[data.length-1][0]])
 	    .range([0, 10])
