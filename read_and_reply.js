@@ -22,7 +22,7 @@ const parse = (text) => {
 		const delimeter = data[0][4]
 		const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,'')))
 	}
-	console.log('parsed data = ' parsed)
+	console.log('parsed data = ', parsed)
 	return parsed
 }
 
