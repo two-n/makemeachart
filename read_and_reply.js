@@ -21,7 +21,6 @@ const parse = (text) => {
 
 	const delimeter = data[0][4]
 	const parsed = [...data].map(d => d.split(delimeter).map(e => +e.trim().replace(/[^\.\d]+/g,'')))
-	console.log('parsed data = ', parsed)
 	return parsed
 }
 
@@ -59,20 +58,15 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let tweeter = tweetEvent.tweet_create_events[0].user.id
 
-	console.log(tweetEvent)
-	console.log(tweetEvent.tweet_create_events[0])
-
 	if (tweeter !== 1031985269984165900) {
 
 		let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
 		let id = tweetEvent.tweet_create_events[0].id_str
-		console.log(quoteStatus)
 
 		if (quoteStatus) {
 			let user1 = tweetEvent.tweet_create_events[0].user.screen_name
 			let user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
 			let tweet = '@' + user1 + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
-			console.log(user1, user2, tweet)
 
 			// request options
 			const request_options = {
