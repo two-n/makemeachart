@@ -57,46 +57,55 @@ const makeViz = (data) => {
 
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
-	let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
-	let id = tweetEvent.tweet_create_events[0].id_str
+	let tweeter = tweetEvent.tweet_create_events[0].user.id
+
+	console.log(tweetEvent)
 	console.log(tweetEvent.tweet_create_events[0])
 	console.log(quoteStatus)
 
-	if (quoteStatus) {
-		let user1 = tweetEvent.tweet_create_events[0].user.screen_name
-		let user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
-		let tweet = '@' + user1 + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
-		console.log(user1, user2, tweet)
+	if (tweeter !== 1031985269984165900) {
 
-		// request options
-		const request_options = {
-			oauth: auth.twitter_oauth,
-			url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
+		let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
+		let id = tweetEvent.tweet_create_events[0].id_str
+
+		if (quoteStatus) {
+			let user1 = tweetEvent.tweet_create_events[0].user.screen_name
+			let user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
+			let tweet = '@' + user1 + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
+			console.log(user1, user2, tweet)
+
+			// request options
+			const request_options = {
+				oauth: auth.twitter_oauth,
+				url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
+			}
+
+			// POST request to tweet
+			request.post(request_options).then(function (body) {
+				console.log(body)
+			}).catch(function (body) {
+				console.log(body)
+			})
+
+		} else {
+			let user = tweetEvent.tweet_create_events[0].user.screen_name
+			let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
+
+			// request options
+			const request_options = {
+				oauth: auth.twitter_oauth,
+				url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
+			}
+
+			// POST request to tweet
+			request.post(request_options).then(function (body) {
+				console.log(body)
+			}).catch(function (body) {
+				console.log(body)
+			})
+
 		}
-
-		// POST request to tweet
-		request.post(request_options).then(function (body) {
-			console.log(body)
-		}).catch(function (body) {
-			console.log(body)
-		})
-
-	} else {
-		let user = tweetEvent.tweet_create_events[0].user.screen_name
-		let tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
-
-		// request options
-		const request_options = {
-			oauth: auth.twitter_oauth,
-			url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
-		}
-
-		// POST request to tweet
-		request.post(request_options).then(function (body) {
-			console.log(body)
-		}).catch(function (body) {
-			console.log(body)
-		})
 
 	}
+	
 }
