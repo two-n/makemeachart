@@ -15,6 +15,14 @@ auth.twitter_oauth = {
   token_secret: process.env.USER_TOKEN_SECRET, // USER SPECIFIC
 }
 
+const digits = (arr) => {
+	return Math.max(...arr.map(e => e === 0 
+		? 1 
+		: e === 1000 
+			? 4 
+			: Math.floor(Math.log(e) / Math.LN10 + 1)))
+}
+
 const parse = (text) => {
 	console.log('parsing...')
 	const data = text.split('\n').filter(e => e.slice(0,4).search(/\d{4}/) === 0)
@@ -47,10 +55,9 @@ const makeViz = (data) => {
 	const xStep = Math.round(xScale.range()[1] / xTicks.length) - 2
 	let viz = yTicks.map(e => {
 	  let filtered = data.filter(d => d[1] >= +e && d[1] < +e + yStep)
-	  return `${format('.2s')(e)}| ${makeVizRow(filtered)}`
+	  return `${e.toString().padStart(digits(yTicks),'0')}| ${makeVizRow(filtered)}`
 	}).join('\n')
 	viz += '\n' + '\u3000'.repeat(2) + xScale.domain()[0].toString().slice(2,4) + '\uffe3'.repeat(xScale.range()[1]) + xScale.domain()[1].toString().slice(2,4)
-
 	return viz
 }
 
@@ -84,8 +91,7 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 		if (quoteStatus) {
 			const user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
 			const tweet = '@' + user + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
-			const request_options = createRequestOps(tweet, id);
-			postResponse(request_options);		
+			postResponse(createRequestOps(tweet, id));		
 		} else if (replyStatus) {
 			const origTweetId = tweetEvent.tweet_create_events[0].in_reply_to_status_id_str
 			// request options for the reply 
@@ -97,13 +103,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 			request.get(request_options_reply).then(function (body) {
   			const tweet = '@' + user + ' ' + makeViz(parse(JSON.parse(body).text))
   			//post the response
-  			const request_options = createRequestOps(tweet, id);
-				postResponse(request_options);
+				postResponse(createRequestOps(tweet, id));
 			}) 
 		} else {
 			const tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
-			const request_options = createRequestOps(tweet, id);
-			postResponse(request_options);
+			postResponse(createRequestOps(tweet, id));
 		}
 	}
 }
