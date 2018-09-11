@@ -54,6 +54,22 @@ const makeViz = (data) => {
 	return viz
 }
 
+const createRequestOps = (tweet) => {
+	const request_options = {
+		oauth: auth.twitter_oauth,
+		url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
+	}
+	return request_options
+}
+
+const postResponse = (request_options) => {
+	request.post(request_options).then(function (body) {
+		console.log(body)
+	}).catch(function (body) {
+		console.log(body)
+	})
+}
+
 module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	let tweeter = tweetEvent.tweet_create_events[0].user.id
@@ -61,28 +77,33 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 
 	if (tweeter !== 1031985269984165900) {
 
-		let quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
-		console.log(quoteStatus)
-		let id = tweetEvent.tweet_create_events[0].id_str
-		let user = tweetEvent.tweet_create_events[0].user.screen_name
-		let user2 = quoteStatus ? tweetEvent.tweet_create_events[0].quoted_status.user.screen_name : null
-		let tweet = quoteStatus 
-			? '@' + user + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
-			: '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
+		const quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
+		const replyStatus = !!+tweetEvent.tweet_create_events[0].in_reply_to_status_id
+		const id = tweetEvent.tweet_create_events[0].id_str
+		const user = tweetEvent.tweet_create_events[0].user.screen_name
 
-		// request options
-		const request_options = {
-			oauth: auth.twitter_oauth,
-			url: 'https://api.twitter.com/1.1/statuses/update.json?status=' + encodeURIComponent(tweet) + '&in_reply_to_status_id=' + id,
+		if (quoteStatus) {
+			const user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
+			const tweet = '@' + user + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
+			createRequestOps(tweet);
+			postResponse(request_options);		
+		} else if (replyStatus) {
+			// request options for the reply 
+			const request_options_reply = {
+				oauth: auth.twitter_oauth,
+				url: 'https://api.twitter.com/1.1/statuses/show.json?id=' + id,
+			}
+			// GET request for the original tweet text
+			request.get(request_options_reply).then(function (body) {
+  			const tweet = '@' + user + ' ' + makeViz(parse(JSON.parse(body).text))
+  			//post the response
+  			createRequestOps(tweet);
+				postResponse(request_options);
+			}) 
+		} else {
+			const tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
+			createRequestOps(tweet);
+			postResponse(request_options);
 		}
-
-		// POST request to tweet
-		request.post(request_options).then(function (body) {
-			console.log(body)
-		}).catch(function (body) {
-			console.log(body)
-		})
-
 	}
-	
 }
