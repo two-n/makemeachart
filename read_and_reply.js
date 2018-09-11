@@ -84,7 +84,7 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 		if (quoteStatus) {
 			const user2 = tweetEvent.tweet_create_events[0].quoted_status.user.screen_name
 			const tweet = '@' + user + ' ' + '@' + user2 + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].quoted_status.text))
-			createRequestOps(tweet, id);
+			const request_options = createRequestOps(tweet, id);
 			postResponse(request_options);		
 		} else if (replyStatus) {
 			const origTweetId = tweetEvent.tweet_create_events[0].in_reply_to_status_id_str
@@ -97,12 +97,12 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 			request.get(request_options_reply).then(function (body) {
   			const tweet = '@' + user + ' ' + makeViz(parse(JSON.parse(body).text))
   			//post the response
-  			createRequestOps(tweet, id);
+  			const request_options = createRequestOps(tweet, id);
 				postResponse(request_options);
 			}) 
 		} else {
 			const tweet = '@' + user + ' ' + makeViz(parse(tweetEvent.tweet_create_events[0].text))
-			createRequestOps(tweet, id);
+			const request_options = createRequestOps(tweet, id);
 			postResponse(request_options);
 		}
 	}
