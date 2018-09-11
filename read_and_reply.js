@@ -76,7 +76,6 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 	console.log(tweetEvent.tweet_create_events[0])
 
 	if (tweeter !== 1031985269984165900) {
-
 		const quoteStatus = tweetEvent.tweet_create_events[0].is_quote_status
 		const replyStatus = !!+tweetEvent.tweet_create_events[0].in_reply_to_status_id
 		const id = tweetEvent.tweet_create_events[0].id_str
@@ -88,10 +87,11 @@ module.exports.read_and_reply = read_and_reply = (tweetEvent) => {
 			createRequestOps(tweet);
 			postResponse(request_options);		
 		} else if (replyStatus) {
+			const origTweetId = tweetEvent.tweet_create_events[0].in_reply_to_status_id_str
 			// request options for the reply 
 			const request_options_reply = {
 				oauth: auth.twitter_oauth,
-				url: 'https://api.twitter.com/1.1/statuses/show.json?id=' + id,
+				url: 'https://api.twitter.com/1.1/statuses/show.json?id=' + origTweetId,
 			}
 			// GET request for the original tweet text
 			request.get(request_options_reply).then(function (body) {
